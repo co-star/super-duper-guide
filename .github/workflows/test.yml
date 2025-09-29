@@ -1,0 +1,36 @@
+name: 测试
+
+on: 
+  workflow_dispatch:
+env:
+  USERNAME: ${{ secrets.USERNAME }}
+  PASSWORD: ${{ secrets.PASSWORD }}
+  APP_ID: ${{ secrets.APP_ID }}
+  API_KEY: ${{ secrets.API_KEY }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  TWOCAPTCHA_TOKEN: ${{ secrets.TWOCAPTCHA_TOKEN }}
+  TELE_ID: ${{ secrets.TELE_ID }}
+  TELE_TOKEN: ${{ secrets.TELE_TOKEN }}
+  ASR_CHOICE: ${{ secrets.ASR_CHOICE }}
+  IBM_URL: ${{ secrets.IBM_URL }}
+
+#       sudo sed -i 's/azure\.//' /etc/apt/sources.list 防止apt安装失败
+
+jobs:
+  test:
+    runs-on: windows-2022
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v3
+
+      - name: test
+        run: |
+          pip3 install -r ./requirements.txt
+          pip3 install cffi==1.12.3 gevent==1.4.0 greenlet==0.4.15 pycparser==2.19 six==1.12.0 websocket==0.2.1 websocket-client==0.56.0
+          sed -i -e "s:GITHUB = False:GITHUB = True:g" main.py
+          sed -i '22s/^#//' main.py 
+          sed -i '402,406s/^#//' main.py
+          
+          python3 main.py
+          
+          

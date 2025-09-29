@@ -1,0 +1,27 @@
+name: docker run
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: IMAGES
+    steps:
+      - name: "run"
+        run: |
+          docker pull zakkoree/woiden_extend:latest
+          docker run -e USERNAME=${{ secrets.USERNAME }} \
+          -e PASSWORD=${{ secrets.PASSWORD }} \
+          -e TWOCAPTCHA_TOKEN=${{ secrets.TWOCAPTCHA_TOKEN }} \
+          -e APP_ID=${{ secrets.APP_ID }} \
+          -e API_KEY=${{ secrets.API_KEY }} \
+          -e SECRET_KEY=${{ secrets.SECRET_KEY }} \
+          -e ASR_CHOICE=${{ secrets.ASR_CHOICE }} \
+          -e IBM_URL=${{ secrets.IBM_URL }} \
+          -e HOST=${{ secrets.HOST }} \
+          -e SECRET_ID=${{ secrets.SECRET_ID }} \
+          -e TENC_TOKEN=${{ secrets.TENC_TOKEN }}
+          -e TELE_ID=${{ secrets.TELE_ID }}
+          -e TELE_TOKEN=${{ secrets.TELE_TOKEN }}
+          ghcr.io/zakkoree/woinden_extend:latest
